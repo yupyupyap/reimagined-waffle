@@ -1,0 +1,53 @@
+{
+  "event": "trainer.dataset.manifest",
+  "schema": "localchessengine.nnue.dataset.manifest.v1",
+  "dataset_id": "lce-task-027-smoke-d5d6c290bdd640da",
+  "date": "2026-05-11T00:00:00Z",
+  "source_task": "TASK-027",
+  "dataset_format": "localchessengine.nnue.dataset.v1",
+  "dataset": "engine/data/nnue/task-027-smoke.binpack",
+  "preview": "engine/data/nnue/task-027-smoke-preview.csv",
+  "positions": 8,
+  "checksum": "0xd5d6c290bdd640da",
+  "dataset_checksum": "0xd5d6c290bdd640da",
+  "external_data": false,
+  "primary_signal": "local_hce_search",
+  "strength_evidence": false,
+  "source_engine": {
+    "name": "LocalChessEngine",
+    "label_source": "own_engine_search_and_hce",
+    "search_depth": 1
+  },
+  "generation": {
+    "positions_requested": 8,
+    "positions_accepted": 8,
+    "games_requested": 4,
+    "games_started": 1,
+    "games_completed": 1,
+    "max_plies": 32,
+    "plies_played": 32,
+    "seed": 27027
+  },
+  "filters": {
+    "min_ply": 8,
+    "max_abs_eval_cp": 2500,
+    "skip_in_check": true,
+    "skip_best_move_capture": true,
+    "positions_considered": 32,
+    "accepted_by_filter": 21,
+    "filtered_total": 11,
+    "reasons": {
+      "opening_ply": 8,
+      "in_check": 1,
+      "best_move_capture": 2,
+      "eval_out_of_range": 0,
+      "terminal_or_no_bestmove": 0
+    }
+  },
+  "wdl": {
+    "orientation": "white_relative",
+    "unit": "permille",
+    "adjudication_draw_cp": 10
+  },
+  "notes": "Smoke dataset only; not training scale and not strength evidence."
+}

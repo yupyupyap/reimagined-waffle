@@ -1,0 +1,9 @@
+fen,bestmove,eval_cp,wdl_white,wdl_draw,wdl_black,ply,depth,nodes,zobrist_key,game_index
+"rnbqkb1r/1pp2ppp/p2pp2n/8/P7/5R1P/1PPPPPP1/1NBQKBNR w Kkq - 0 5",b1c3,44,0,0,1000,8,1,32,0xb059211eac9220ac,0
+"rnbqkb1r/1pp2ppp/p2pp2n/8/P7/2N2R1P/1PPPPPP1/2BQKBNR b Kkq - 1 5",b8c6,-14,0,0,1000,9,1,31,0x5bd27a28e2794c13,0
+"r1bqkb1r/1pp2ppp/p1npp2n/8/P7/2N2R1P/1PPPPPP1/2BQKBNR w Kkq - 2 6",c3e4,20,0,0,1000,10,1,33,0x73a7fb7fee911f79,0
+"r1bqkb1r/1pp2ppp/p1npp2n/8/P3N3/5R1P/1PPPPPP1/2BQKBNR b Kkq - 3 6",h6f5,-37,0,0,1000,11,1,35,0x6d508fc6cc98e351,0
+"r1bqkb1r/1pp2ppp/p1npp3/5n2/P3N3/5R1P/1PPPPPP1/2BQKBNR w Kkq - 4 7",d2d3,-20,0,0,1000,12,1,34,0x4642d4949cf8a73f,0
+"r1bqkb1r/1pp2ppp/p1npp3/5n2/P3N3/3P1R1P/1PP1PPP1/2BQKBNR b Kkq - 0 7",c6e5,-44,0,0,1000,13,1,38,0x260e58342d5a5201,0
+"r1bqkb1r/1pp2ppp/p2pp3/4nn2/P3N3/3P1R1P/1PP1PPP1/2BQKBNR w Kkq - 1 8",f3f4,-50,0,0,1000,14,1,135,0x4cdb733b825b1344,0
+"r1bqkb1r/1pp2ppp/p2pp3/4nn2/P3NR2/3P3P/1PP1PPP1/2BQKBNR b Kkq - 2 8",c8d7,-78,0,0,1000,15,1,44,0x5c3be2f44dd27a75,0

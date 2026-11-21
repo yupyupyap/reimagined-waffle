@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Horse-head silhouette, profile facing left -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+        d="M 24 58
+           C 20 50 24 40 32 32
+           C 42 22 56 16 70 18
+           L 72 18
+           L 78 12
+           L 84 22
+           L 80 28
+           C 88 32 94 42 94 54
+           C 94 68 92 80 88 88
+           L 90 92
+           L 96 96
+           L 100 102
+           L 100 118
+           L 28 118
+           L 28 102
+           L 32 96
+           L 40 92
+           C 48 84 54 76 58 66
+           C 58 60 54 58 50 60
+           L 42 62
+           L 34 62
+           Z"/>
+  <!-- Eye -->
+  <circle cx="60" cy="38" r="2" fill="#1a1a1a"/>
+  <!-- Mouth carved line -->
+  <path fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"
+        d="M 28 56 L 36 56"/>
+  <!-- Mane ridges (3 short diagonal cuts on the back of the neck) -->
+  <path fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"
+        d="M 86 40 L 90 46 M 84 52 L 88 58 M 80 64 L 84 70"/>
+</svg>

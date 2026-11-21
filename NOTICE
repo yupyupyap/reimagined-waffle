@@ -1,0 +1,49 @@
+LocalChessEngine
+================
+
+LocalChessEngine is a local-first chess engine, NNUE trainer, and Qt Widgets
+desktop GUI project. The project-owned C++/Python source, documentation, and
+self-authored SVG chess pieces are licensed under the MIT License unless a file
+states otherwise.
+
+The command-line engine is distributed as a separate UCI executable. The GUI
+launches that engine through a process boundary (`QProcess`) and does not link
+Qt into the engine/core targets.
+
+Qt Notice
+---------
+
+The `localchessengine_gui` target dynamically links Qt 6 Core, Gui, Widgets,
+Svg, and SvgWidgets. The v0.1 distribution uses the LGPLv3 path for Qt dynamic
+linking. Qt is also available under other license options from The Qt Company
+and the Qt Project.
+
+Redistribution artifacts must include:
+
+- this notice,
+- the project MIT license,
+- the GNU LGPLv3 and GPLv3 license texts,
+- third-party notices and copyright files,
+- instructions for replacing or relinking the Qt dynamic libraries, and
+- the corresponding Qt/dependency source archive or equivalent source offer.
+
+Privacy Notice
+--------------
+
+The product is local-first. The engine and GUI do not send telemetry or game
+data by default. Optional FEN-pool export from Hugging Face datasets and
+external OpenBench/Cute Chess workflows require explicit user commands.
+
+Legal Materials
+---------------
+
+Release packaging places legal materials under `Contents/Resources/Legal` in
+the app bundle and next to the app in the DMG. Source-control copies live at:
+
+- `LICENSE`
+- `COPYING.LGPL-3.0.txt`
+- `COPYING.GPL-3.0.txt`
+- `THIRD_PARTY_NOTICES.md`
+- `docs/compliance/privacy.md`
+- `docs/compliance/qt-relink.md`
+- `docs/compliance/release-checklist.md`

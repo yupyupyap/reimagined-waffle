@@ -1,0 +1,4 @@
+setoption name Hash value 128
+setoption name Threads value 10
+setoption name Use NNUE value false
+ucinewgame

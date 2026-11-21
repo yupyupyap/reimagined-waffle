@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Five-point crown (spikes) -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"
+        d="M 36 32 L 38 22 L 45 30 L 50 18 L 57 30 L 64 14 L 71 30 L 78 18 L 83 30 L 90 22 L 92 32 Z"/>
+  <!-- Orbs on each spike tip -->
+  <circle cx="38" cy="22" r="3" fill="#f4efe3" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="50" cy="18" r="3" fill="#f4efe3" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="64" cy="14" r="3" fill="#f4efe3" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="78" cy="18" r="3" fill="#f4efe3" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="90" cy="22" r="3" fill="#f4efe3" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- Coronet headband -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"
+        d="M 34 32 L 94 32 L 96 40 L 32 40 Z"/>
+  <!-- Neck / collar -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"
+        d="M 44 40 L 84 40 L 78 50 L 50 50 Z"/>
+  <!-- Body (bell) -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"
+        d="M 50 50 C 44 64 38 84 36 100 L 92 100 C 90 84 84 64 78 50 Z"/>
+  <!-- Base -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"
+        d="M 34 100 L 94 100 L 98 106 L 100 112 L 100 118 L 28 118 L 28 112 L 30 106 Z"/>
+</svg>

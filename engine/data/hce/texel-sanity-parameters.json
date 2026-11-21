@@ -1,0 +1,38 @@
+{
+  "schema": "localchessengine.hce.parameters.v1",
+  "status": "experimental",
+  "source_task": "TASK-024",
+  "promotion": "not-enabled-by-default",
+  "dataset": "engine/data/hce/texel-sanity.csv",
+  "dataset_checksum": "0x9b125137a55479c1",
+  "initial_parameter_checksum": "0xa443fc1d7d0b5d04",
+  "parameter_checksum": "0x0d779b4be19e4080",
+  "scale": 400,
+  "loss": {
+    "initial": 0.019066573776780942,
+    "final": 0.012389339404943727
+  },
+  "parameters": {
+    "middle_game_piece_values": [100, 320, 330, 500, 788, 0],
+    "end_game_piece_values": [50, 300, 320, 510, 788, 0],
+    "middle_game_mobility_weights": [0, 4, 4, 2, 0, 0],
+    "end_game_mobility_weights": [0, 4, 4, 3, 0, 0],
+    "middle_game_passed_pawn_bonus": [0, 6, 12, 22, 38, 64, 100, 0],
+    "end_game_passed_pawn_bonus": [0, 12, 24, 42, 72, 112, 106, 0],
+    "middle_game_isolated_pawn_penalty": 12,
+    "end_game_isolated_pawn_penalty": 10,
+    "middle_game_doubled_pawn_penalty": 10,
+    "end_game_doubled_pawn_penalty": 14,
+    "middle_game_bishop_pair_bonus": 30,
+    "end_game_bishop_pair_bonus": 40,
+    "middle_game_rook_open_file_bonus": 22,
+    "end_game_rook_open_file_bonus": 12,
+    "middle_game_rook_semi_open_file_bonus": 12,
+    "end_game_rook_semi_open_file_bonus": 8,
+    "king_shield_rank_one_bonus": 7,
+    "king_shield_rank_two_bonus": 3,
+    "king_semi_open_file_penalty": 8,
+    "king_open_file_penalty": 14,
+    "king_zone_attack_penalty": 0
+  }
+}

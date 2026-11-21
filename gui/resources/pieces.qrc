@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/pieces">
+        <file alias="white_pawn.svg">pieces/white_pawn.svg</file>
+        <file alias="white_knight.svg">pieces/white_knight.svg</file>
+        <file alias="white_bishop.svg">pieces/white_bishop.svg</file>
+        <file alias="white_rook.svg">pieces/white_rook.svg</file>
+        <file alias="white_queen.svg">pieces/white_queen.svg</file>
+        <file alias="white_king.svg">pieces/white_king.svg</file>
+        <file alias="black_pawn.svg">pieces/black_pawn.svg</file>
+        <file alias="black_knight.svg">pieces/black_knight.svg</file>
+        <file alias="black_bishop.svg">pieces/black_bishop.svg</file>
+        <file alias="black_rook.svg">pieces/black_rook.svg</file>
+        <file alias="black_queen.svg">pieces/black_queen.svg</file>
+        <file alias="black_king.svg">pieces/black_king.svg</file>
+    </qresource>
+</RCC>

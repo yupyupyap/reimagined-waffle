@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69", "wheel>=0.43", "pybind11>=2.13"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "localchessengine-trainer"
+version = "0.2.0"
+description = "LocalChessEngine NNUE trainer with PyTorch MPS/CPU smoke validation."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26,<3",
+  "torch>=2.5,<3",
+]
+
+[project.optional-dependencies]
+fen-pool = [
+  "datasets>=4.0,<5",
+]
+
+[project.scripts]
+localchessengine-trainer-smoke = "localchessengine_trainer.smoke_train:main"
+localchessengine-train = "localchessengine_trainer.train:main"
+localchessengine-nnue-export = "localchessengine_trainer.serialize:main"
+localchessengine-export-lichess-fens = "localchessengine_trainer.lichess_fen_pool:main"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]

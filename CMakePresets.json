@@ -1,0 +1,247 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base-ninja-vcpkg",
+      "hidden": true,
+      "displayName": "Base Ninja + vcpkg",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "toolchainFile": "/tmp/localchessengine-vcpkg-root/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "VCPKG_MANIFEST_INSTALL": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "VCPKG_MANIFEST_MODE": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "VCPKG_TARGET_TRIPLET": "arm64-osx-lce-dynamic",
+        "VCPKG_HOST_TRIPLET": "arm64-osx-lce-dynamic",
+        "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake/triplets",
+        "VCPKG_INSTALLED_DIR": {
+          "type": "PATH",
+          "value": "/tmp/localchessengine-vcpkg-installed"
+        },
+        "LOCALCHESSENGINE_SANITIZER": ""
+      }
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug",
+      "description": "Debug build with Ninja and vcpkg manifest mode.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release",
+      "description": "Release build with Apple Silicon engine flags.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "asan",
+      "displayName": "AddressSanitizer",
+      "description": "Debug build with AddressSanitizer.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "LOCALCHESSENGINE_SANITIZER": "Address"
+      }
+    },
+    {
+      "name": "ubsan",
+      "displayName": "UndefinedBehaviorSanitizer",
+      "description": "Debug build with UndefinedBehaviorSanitizer.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "LOCALCHESSENGINE_SANITIZER": "Undefined"
+      }
+    },
+    {
+      "name": "tsan",
+      "displayName": "ThreadSanitizer",
+      "description": "Debug build with ThreadSanitizer.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "LOCALCHESSENGINE_SANITIZER": "Thread"
+      }
+    },
+    {
+      "name": "lint",
+      "displayName": "Lint Compile Database",
+      "description": "Debug build used to prepare compile_commands.json for TASK-003 lint wiring.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "profile",
+      "displayName": "Profile",
+      "description": "RelWithDebInfo build with frame pointers for Instruments/xctrace profiling.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "LOCALCHESSENGINE_PROFILE_BUILD": {
+          "type": "BOOL",
+          "value": "ON"
+        }
+      }
+    },
+    {
+      "name": "pgo-generate",
+      "displayName": "PGO Generate",
+      "description": "Release build instrumented for LLVM profile collection.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "LOCALCHESSENGINE_BUILD_GUI": {
+          "type": "BOOL",
+          "value": "OFF"
+        },
+        "LOCALCHESSENGINE_PGO_MODE": "Generate"
+      }
+    },
+    {
+      "name": "pgo-use",
+      "displayName": "PGO Use",
+      "description": "Release build optimized with a merged LLVM .profdata profile.",
+      "inherits": "base-ninja-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "LOCALCHESSENGINE_BUILD_GUI": {
+          "type": "BOOL",
+          "value": "OFF"
+        },
+        "LOCALCHESSENGINE_PGO_MODE": "Use",
+        "LOCALCHESSENGINE_PGO_PROFILE": {
+          "type": "FILEPATH",
+          "value": "${sourceDir}/build/perf/task-045/merged.profdata"
+        }
+      }
+    },
+    {
+      "name": "fuzz",
+      "displayName": "Fuzz",
+      "description": "Debug build for bounded libFuzzer parser harnesses with Homebrew LLVM.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "CMAKE_BUILD_TYPE": "Debug",
+        "BUILD_TESTING": {
+          "type": "BOOL",
+          "value": "OFF"
+        },
+        "LOCALCHESSENGINE_BUILD_GUI": {
+          "type": "BOOL",
+          "value": "OFF"
+        },
+        "LOCALCHESSENGINE_BUILD_FUZZERS": {
+          "type": "BOOL",
+          "value": "ON"
+        }
+      },
+      "environment": {
+        "CC": "/opt/homebrew/opt/llvm/bin/clang",
+        "CXX": "/opt/homebrew/opt/llvm/bin/clang++"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "release",
+      "configurePreset": "release"
+    },
+    {
+      "name": "asan",
+      "configurePreset": "asan"
+    },
+    {
+      "name": "ubsan",
+      "configurePreset": "ubsan"
+    },
+    {
+      "name": "tsan",
+      "configurePreset": "tsan"
+    },
+    {
+      "name": "lint",
+      "configurePreset": "lint",
+      "targets": [
+        "lint"
+      ]
+    },
+    {
+      "name": "profile",
+      "configurePreset": "profile"
+    },
+    {
+      "name": "pgo-generate",
+      "configurePreset": "pgo-generate"
+    },
+    {
+      "name": "pgo-use",
+      "configurePreset": "pgo-use"
+    },
+    {
+      "name": "fuzz",
+      "configurePreset": "fuzz"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "asan",
+      "configurePreset": "asan",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "ubsan",
+      "configurePreset": "ubsan",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "tsan",
+      "configurePreset": "tsan",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

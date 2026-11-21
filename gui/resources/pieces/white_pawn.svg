@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Head -->
+  <circle cx="64" cy="42" r="12" fill="#f4efe3" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- Collar (small flared ring under the head) -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"
+        d="M 52 54 L 76 54 L 78 60 L 50 60 Z"/>
+  <!-- Body -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"
+        d="M 54 60 C 51 72 47 84 41 96 L 87 96 C 81 84 77 72 74 60 Z"/>
+  <!-- Base -->
+  <path fill="#f4efe3" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"
+        d="M 38 96 L 90 96 L 94 102 L 98 108 L 98 118 L 30 118 L 30 108 L 34 102 Z"/>
+</svg>
