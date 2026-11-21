@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numbers>
 #include <utility>
 
 namespace {
@@ -28,6 +29,12 @@ constexpr int kMinimumCaptureHintPenWidth = 3;
 constexpr int kCaptureHintPenDivisor = 18;
 constexpr qreal kPieceInsetRatio = 0.075;
 constexpr qreal kDragPieceOpacity = 0.82;
+
+// Pengaturan animasi getar (shake) saat bidak dipilih
+constexpr int kShakeDurationMs = 280;
+constexpr int kShakeFrameIntervalMs = 16; // ~60 FPS
+constexpr double kShakeFrequencyHz = 18.0;
+constexpr double kShakeAmplitudeRatio = 0.08; // 8% dari lebar kotak
 
 constexpr std::array<const char*, eng::Piece::count> kPieceResourcePaths{
     ":/pieces/white_pawn.svg", ":/pieces/white_knight.svg", ":/pieces/white_bishop.svg",
@@ -64,6 +71,15 @@ BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent) {
     setMouseTracking(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     load_piece_renderers();
+
+    shake_timer_.setInterval(kShakeFrameIntervalMs);
+    connect(&shake_timer_, &QTimer::timeout, this, [this]() {
+        if (!shake_clock_.isValid() || shake_clock_.elapsed() >= kShakeDurationMs ||
+            !selected_square_.has_value()) {
+            shake_timer_.stop();
+        }
+        update();
+    });
 }
 
 BoardWidget::~BoardWidget() = default;
@@ -98,7 +114,16 @@ void BoardWidget::set_selected_square(std::optional<eng::Square> square) {
         square.reset();
     }
 
+    const bool changed = (selected_square_ != square);
     selected_square_ = square;
+
+    if (changed && selected_square_.has_value() &&
+        !position_.piece_on(*selected_square_).is_none()) {
+        start_select_shake();
+    } else if (!selected_square_.has_value()) {
+        shake_timer_.stop();
+    }
+
     update();
 }
 
@@ -140,6 +165,7 @@ void BoardWidget::clear_interaction() {
     highlighted_move_.reset();
     legal_destinations_.clear();
     dragging_ = false;
+    shake_timer_.stop();
 }
 
 QSize BoardWidget::sizeHint() const { return QSize{kPreferredBoardSize, kPreferredBoardSize}; }
@@ -254,6 +280,36 @@ void BoardWidget::load_piece_renderers() {
     }
 }
 
+void BoardWidget::start_select_shake() {
+    shake_clock_.restart();
+    if (!shake_timer_.isActive()) {
+        shake_timer_.start();
+    }
+}
+
+QPoint BoardWidget::current_shake_offset(int square_size) const {
+    if (!shake_timer_.isActive() || !shake_clock_.isValid()) {
+        return QPoint{0, 0};
+    }
+
+    const qint64 elapsed_ms = shake_clock_.elapsed();
+    if (elapsed_ms >= kShakeDurationMs) {
+        return QPoint{0, 0};
+    }
+
+    const double progress = static_cast<double>(elapsed_ms) / static_cast<double>(kShakeDurationMs);
+    const double damping = 1.0 - progress; // Redaman agar getaran mengecil lalu berhenti
+    const double seconds = static_cast<double>(elapsed_ms) / 1000.0;
+    const double amplitude = static_cast<double>(square_size) * kShakeAmplitudeRatio * damping;
+
+    const int dx = static_cast<int>(
+        std::lround(std::sin(2.0 * std::numbers::pi * kShakeFrequencyHz * seconds) * amplitude));
+    const int dy = static_cast<int>(std::lround(
+        std::cos(2.0 * std::numbers::pi * (kShakeFrequencyHz * 0.5) * seconds) * (amplitude * 0.35)));
+
+    return QPoint{dx, dy};
+}
+
 void BoardWidget::draw_board(QPainter& painter, QRect board) {
     const int square_size = board.width() / kBoardFiles;
 
@@ -324,6 +380,8 @@ void BoardWidget::draw_highlights(QPainter& painter, QRect board, int square_siz
 }
 
 void BoardWidget::draw_pieces(QPainter& painter, QRect board, int square_size) const {
+    const QPoint shake_offset = current_shake_offset(square_size);
+
     for (int square_index = 0; square_index < eng::Square::count; ++square_index) {
         const eng::Square square = eng::Square::from_index(square_index);
         const eng::Piece piece = position_.piece_on(square);
@@ -334,7 +392,12 @@ void BoardWidget::draw_pieces(QPainter& painter, QRect board, int square_size) c
             continue;
         }
 
-        draw_piece(painter, piece, square_rect(square, board, square_size));
+        QRect target_rect = square_rect(square, board, square_size);
+        if (selected_square_.has_value() && *selected_square_ == square) {
+            target_rect.translate(shake_offset);
+        }
+
+        draw_piece(painter, piece, target_rect);
     }
 
     if (dragging_ && pressed_square_.has_value()) {
