@@ -1,3 +1,5 @@
+#include "board_widget.hpp"
+
 #include <QApplication>
 #include <QColor>
 #include <QMouseEvent>
