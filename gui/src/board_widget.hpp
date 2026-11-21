@@ -5,12 +5,14 @@
 #include "eng/position.hpp"
 #include "eng/types.hpp"
 
+#include <QElapsedTimer>
 #include <QHash>
 #include <QPixmap>
 #include <QPoint>
 #include <QRect>
 #include <QString>
 #include <QSvgRenderer>
+#include <QTimer>
 #include <QWidget>
 
 #include <array>
@@ -67,6 +69,8 @@ class BoardWidget final : public QWidget {
     };
 
     void load_piece_renderers();
+    void start_select_shake();
+    [[nodiscard]] QPoint current_shake_offset(int square_size) const;
     static void draw_board(QPainter& painter, QRect board);
     void draw_highlights(QPainter& painter, QRect board, int square_size) const;
     void draw_pieces(QPainter& painter, QRect board, int square_size) const;
@@ -91,6 +95,8 @@ class BoardWidget final : public QWidget {
     QPoint drag_start_;
     QPoint drag_position_;
     bool dragging_{false};
+    QTimer shake_timer_;
+    QElapsedTimer shake_clock_;
     std::array<std::unique_ptr<QSvgRenderer>, eng::Piece::count> piece_renderers_{};
     mutable QHash<QString, QPixmap> pixmap_cache_;
 };
