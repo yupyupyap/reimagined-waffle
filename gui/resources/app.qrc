@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/app">
         <file alias="icon.svg">app/icon.svg</file>
+        <file>app/wood_border.jpg</file>
     </qresource>
 </RCC>
