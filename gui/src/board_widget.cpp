@@ -19,8 +19,10 @@ namespace {
 
 constexpr int kBoardFiles = 8;
 constexpr int kBoardRanks = 8;
-constexpr int kPreferredBoardSize = 640;
-constexpr int kMinimumBoardSize = 320;
+constexpr int kPreferredBoardSize = 680;
+constexpr int kMinimumBoardSize = 340;
+constexpr int kMinimumBorderThickness = 14;
+constexpr int kBorderThicknessDivisor = 24;
 constexpr int kLegalQuietHintMinimumDiameter = 8;
 constexpr int kLegalQuietHintDivisor = 5;
 constexpr int kLegalCaptureHintMinimumInset = 4;
@@ -45,7 +47,8 @@ constexpr std::array<const char*, eng::Piece::count> kPieceResourcePaths{
 
 [[nodiscard]] QColor light_square_color() { return QColor{QStringLiteral("#ebe2ce")}; }
 [[nodiscard]] QColor dark_square_color() { return QColor{QStringLiteral("#658a73")}; }
-[[nodiscard]] QColor board_border_color() { return QColor{QStringLiteral("#262d2a")}; }
+[[nodiscard]] QColor board_border_color() { return QColor{QStringLiteral("#1f1610")}; }
+[[nodiscard]] QColor wood_fallback_color() { return QColor{QStringLiteral("#3e2723")}; }
 [[nodiscard]] QColor last_move_color() { return QColor{QStringLiteral("#68f5c645")}; }
 [[nodiscard]] QColor selected_square_color() { return QColor{QStringLiteral("#7e4682b4")}; }
 [[nodiscard]] QColor selected_border_color() { return QColor{QStringLiteral("#23527c")}; }
@@ -71,6 +74,9 @@ BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent) {
     setMouseTracking(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     load_piece_renderers();
+
+    // Memuat file gambar tekstur kayu dari Qt resource (gui/resources/app/wood_border.jpg)
+    wood_texture_.load(QStringLiteral(":/app/wood_border.jpg"));
 
     shake_timer_.setInterval(kShakeFrameIntervalMs);
     connect(&shake_timer_, &QTimer::timeout, this, [this]() {
@@ -183,6 +189,10 @@ void BoardWidget::paintEvent(QPaintEvent* event) {
     if (board.isEmpty()) {
         return;
     }
+
+    const int border = border_thickness();
+    const QRect outer_frame = board.adjusted(-border, -border, border, border);
+    draw_wood_frame(painter, outer_frame, board);
 
     const int square_size = board.width() / kBoardFiles;
     draw_board(painter, board);
@@ -298,7 +308,7 @@ QPoint BoardWidget::current_shake_offset(int square_size) const {
     }
 
     const double progress = static_cast<double>(elapsed_ms) / static_cast<double>(kShakeDurationMs);
-    const double damping = 1.0 - progress; // Redaman agar getaran mengecil lalu berhenti
+    const double damping = 1.0 - progress;
     const double seconds = static_cast<double>(elapsed_ms) / 1000.0;
     const double amplitude = static_cast<double>(square_size) * kShakeAmplitudeRatio * damping;
 
@@ -308,6 +318,31 @@ QPoint BoardWidget::current_shake_offset(int square_size) const {
         std::cos(2.0 * std::numbers::pi * (kShakeFrequencyHz * 0.5) * seconds) * (amplitude * 0.35)));
 
     return QPoint{dx, dy};
+}
+
+void BoardWidget::draw_wood_frame(QPainter& painter, QRect outer_frame, QRect inner_board) const {
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    if (!wood_texture_.isNull()) {
+        painter.drawTiledPixmap(outer_frame, wood_texture_);
+    } else {
+        painter.fillRect(outer_frame, wood_fallback_color());
+    }
+
+    // Garis tepi luar bingkai kayu & highlight bevel tipis
+    painter.setPen(QPen{QColor{QStringLiteral("#140d09")}, 2});
+    painter.setBrush(Qt::NoBrush);
+    painter.drawRect(outer_frame.adjusted(0, 0, -1, -1));
+
+    painter.setPen(QPen{QColor{255, 225, 190, 45}, 1});
+    painter.drawRect(outer_frame.adjusted(2, 2, -3, -3));
+
+    // Garis bayangan pemisah antara bingkai kayu dan kotak catur
+    painter.setPen(QPen{board_border_color(), 2});
+    painter.drawRect(inner_board.adjusted(-1, -1, 0, 0));
+
+    painter.restore();
 }
 
 void BoardWidget::draw_board(QPainter& painter, QRect board) {
@@ -321,10 +356,6 @@ void BoardWidget::draw_board(QPainter& painter, QRect board) {
             painter.fillRect(square, light_square ? light_square_color() : dark_square_color());
         }
     }
-
-    painter.setPen(QPen{board_border_color(), 2});
-    painter.setBrush(Qt::NoBrush);
-    painter.drawRect(board.adjusted(0, 0, -1, -1));
 }
 
 void BoardWidget::draw_highlights(QPainter& painter, QRect board, int square_size) const {
@@ -430,8 +461,14 @@ void BoardWidget::emit_move_gesture(eng::Square from_square, eng::Square to_squa
     emit moveGestureCompleted(from_square.index(), to_square.index());
 }
 
+int BoardWidget::border_thickness() const {
+    const int min_dim = std::min(width(), height());
+    return std::max(kMinimumBorderThickness, min_dim / kBorderThicknessDivisor);
+}
+
 QRect BoardWidget::board_rect() const {
-    const int usable_side = std::min(width(), height());
+    const int border = border_thickness();
+    const int usable_side = std::min(width(), height()) - (2 * border);
     const int square_size = usable_side / kBoardFiles;
     if (square_size <= 0) {
         return {};
